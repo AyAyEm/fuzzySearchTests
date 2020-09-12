@@ -1,10 +1,4 @@
-const arrayFilter = require('./arrayFilter');
-const fuseJs = require('./fuseJs');
-const fuzzySearch = require('./fuzzySearch');
-const fuzzySort = require('./fuzzySort');
-const asyncFuzzySort = require('./asyncFuzzySort');
-
-const tests = [arrayFilter, fuseJs, fuzzySearch, fuzzySort, asyncFuzzySort];
+const tests = require('./tests');
 
 async function timeTest(time = 1) {
   const ongoingTests = tests.map((functionTest) => functionTest(time));
@@ -22,4 +16,4 @@ async function logTests(testFunction, executionTimes, logFunc = console.log) {
 
   logFunc(resultsString);
 }
-logTests(timeTest, process.argv[2] || 1000);
+logTests(timeTest, process.argv[2] || 100);
