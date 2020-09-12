@@ -1,7 +1,7 @@
 const tests = require('./tests');
 
-async function timeTest(time = 1) {
-  const ongoingTests = tests.map((functionTest) => functionTest(time));
+async function timeTest(executionTime = 1) {
+  const ongoingTests = tests.map((functionTest) => functionTest(executionTime));
   return Promise.all(ongoingTests);
 }
 
