@@ -16,4 +16,4 @@ async function logTests(testFunction, executionTimes, logFunc = console.log) {
 
   logFunc(resultsString);
 }
-logTests(timeTest, process.argv[2] || 100);
+logTests(timeTest, process.argv[2] || 1000);
