@@ -1,6 +1,6 @@
 const Fuse = require('fuse.js');
 const items = new (require('warframe-items'))({ categories: ['all']});
-const getRandomInput = require('./input');
+const getRandomInput = require('./generalInputs');
 
 function fuseJsTest(times) {
   items.forEach((item) => item.namePrepared = item.name.toLowerCase());

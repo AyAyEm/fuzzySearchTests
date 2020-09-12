@@ -1,6 +1,6 @@
 const FlexSearch = require('flexsearch');
 const items = new (require('warframe-items'))({ categories: ['all'] });
-const getRandomInput = require('./input');
+const getRandomInput = require('./generalInputs');
 
 function flexSearchTest(times) {
   const flexSearchIndex = new FlexSearch({
@@ -15,7 +15,7 @@ function flexSearchTest(times) {
 
   const result = [];
   for (let i = 0; i < times; i += 1) {
-    const input = 'carriar';
+    const input = getRandomInput();
     console.log(input);
     result.push(flexSearchIndex.search({
       query: input,
