@@ -1,11 +1,13 @@
-const tests = require('./tests');
+import tests from './tests';
 
 async function timeTest(executionTime = 1) {
-  const ongoingTests = tests.map((functionTest) => functionTest(executionTime));
+  const ongoingTests = (await tests).map((functionTest) => functionTest(executionTime));
   return Promise.all(ongoingTests);
 }
 
-async function logTests(testFunction, executionTimes, logFunc = console.log) {
+type TestFunction = (executionTimes: number) => Promise<{ time: number, name: string, result: any[] } []>;
+
+async function logTests(testFunction: TestFunction, executionTimes: number, logFunc = console.log) {
   const results = await testFunction(executionTimes);
   const resultsString = results
     .sort(({ time: a }, { time: b }) => a > b ? 1 : -1)
@@ -16,4 +18,4 @@ async function logTests(testFunction, executionTimes, logFunc = console.log) {
 
   logFunc(resultsString);
 }
-logTests(timeTest, process.argv[2] || 1000);
+logTests(timeTest, Number(process.argv[2]) || 1000);

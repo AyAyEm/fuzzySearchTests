@@ -1,9 +1,15 @@
 const Fuse = require('fuse.js');
-const items = new (require('warframe-items'))({ categories: ['all']});
-const getRandomInput = require('./generalInputs');
+import Items from 'warframe-items';
+import { getRandomInput } from './generalInputs';
+  
+type Item = Items[0] & {
+  namePrepared?: string,
+}
 
-function fuseJsTest(times) {
-  items.forEach((item) => item.namePrepared = item.name.toLowerCase());
+const items: Item[] = new Items({ category: ['All'] });
+
+export default function fuseJsTest(times: number) {
+  items.forEach((item: Item) => item.namePrepared = item.name.toLowerCase());
   const fuse = new Fuse(items, {
     keys: ['namePrepared'],
     shouldSort: true,
@@ -18,4 +24,3 @@ function fuseJsTest(times) {
 
   return { time: Date.now() - start.getTime(), name: 'fuseJs', data: result };
 }
-module.exports = fuseJsTest;

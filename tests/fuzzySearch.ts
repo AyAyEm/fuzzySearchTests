@@ -1,8 +1,14 @@
 const FuzzySearch = require('fuzzy-search');
-const items = new (require('warframe-items'))({ categories: ['all']});
-const getRandomInput = require('./input');
+import Items from 'warframe-items';
+import { getRandomInput } from './generalInputs';
+  
+type Item = Items[0] & {
+  namePrepared?: string,
+}
 
-function fuzzySearchTest(times) {
+const items: Item[] = new Items({ category: ['All'] });
+
+export default function fuzzySearchTest(times: number) {
   const fuzzySearch = new FuzzySearch(items, ['namePrepared'], { sort: true });
   items.forEach((item) => item.namePrepared = item.name.toLowerCase());
   const start = new Date();
@@ -14,4 +20,3 @@ function fuzzySearchTest(times) {
 
   return  { time: Date.now() - start.getTime(), name: 'fuzzySearch', data: result };
 }
-module.exports = fuzzySearchTest;

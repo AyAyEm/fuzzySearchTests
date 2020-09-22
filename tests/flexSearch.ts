@@ -1,11 +1,17 @@
 const FlexSearch = require('flexsearch');
-const items = new (require('warframe-items'))({ categories: ['all'] });
-const getRandomInput = require('./generalInputs');
+import Items from 'warframe-items';
+import { getRandomInput } from './generalInputs';
+  
+type Item = Items[0] & {
+  namePrepared?: string,
+}
 
-function flexSearchTest(times) {
+const items: Item[] = new Items({ category: ['All'] });
+
+export default function flexSearchTest(times: number) {
   const flexSearchIndex = new FlexSearch({
-    encode: "extra",
-    tokenize: "strict",
+    encode: 'extra',
+    tokenize: 'strict',
     threshold: 1,
     resolution: 9,
     depth: 4,
@@ -16,13 +22,11 @@ function flexSearchTest(times) {
   const result = [];
   for (let i = 0; i < times; i += 1) {
     const input = getRandomInput();
-    console.log(input);
     result.push(flexSearchIndex.search({
       query: input,
       field: ['name'],
-    }).map((index) => items[index]));
+    }).map((index: number) => items[index]));
   }
 
   return { time: Date.now() - start.getTime(), name: 'flexSearch', data: result };
 }
-module.exports = flexSearchTest;

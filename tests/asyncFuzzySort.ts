@@ -1,8 +1,14 @@
 const fuzzySort = require('fuzzysort');
-const items = new (require('warframe-items'))({ categories: ['all'] });
-const getRandomInput = require('./input');
+import Items from 'warframe-items';
+import { getRandomInput } from './generalInputs';
+  
+type Item = Items[0] & {
+  namePrepared?: string,
+}
 
-function asyncFuzzySortTest(times = 1) {
+const items: Item[] = new Items({ category: ['All'] });
+
+export default function asyncFuzzySortTest(times: number = 1) {
   const fuzzyOptions = { key: 'namePrepared' };
   items.forEach((item) => item.namePrepared = fuzzySort.prepare(item.name));
 
@@ -15,4 +21,3 @@ function asyncFuzzySortTest(times = 1) {
   return Promise.all(searchPromises).then((data) => ({ 
     time: Date.now() - start.getTime(), name: 'asyncFuzzySort', data }));
 }
-module.exports = asyncFuzzySortTest;
