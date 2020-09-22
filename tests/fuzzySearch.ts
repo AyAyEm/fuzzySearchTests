@@ -1,6 +1,6 @@
 const FuzzySearch = require('fuzzy-search');
 import Items from 'warframe-items';
-import { getRandomInput } from './generalInputs';
+import { getRandomInput } from '../generalInputs';
   
 type Item = Items[0] & {
   namePrepared?: string,

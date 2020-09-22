@@ -1,6 +1,6 @@
 import fuzzySort from 'fuzzysort';
 import Items from 'warframe-items';
-import { getRandomInput } from './generalInputs';
+import { getRandomInput } from '../generalInputs';
   
 type Item = Items[0] & {
   namePrepared?: ReturnType<typeof fuzzySort.prepare>,
