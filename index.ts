@@ -12,8 +12,8 @@ async function logTests(testFunction: TestFunction, executionTimes: number, logF
   const resultsString = results
     .sort(({ time: a }, { time: b }) => a > b ? 1 : -1)
     .map(({ time, name }, index) => (
-      `${index + 1}. ${name}: ${time / executionTimes}ms per operation`
-      + `in ${executionTimes} operation(s) took ${time}ms`))
+      `${index + 1}. ${name}: ${time / executionTimes}ms/op `
+      + `in ${executionTimes} op(s) took ${time}ms`))
     .join('\n');
 
   logFunc(resultsString);
