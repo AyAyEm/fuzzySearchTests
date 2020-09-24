@@ -1,43 +1,38 @@
 import Items from 'warframe-items';
+import fuzzySort from 'fuzzysort';
 
 type Item = Items[0] & {
-  namePrepared?: string,
+  namePrepared?: string | ReturnType<typeof fuzzySort.prepare>,
 }
 
 type TestParams = {
   times: number,
   testName: string,
-  testFunc: (input: string, items: Items) => any,
-  preparationFunc?: (list: Item[]) => void,
 }
 
-export default class Test {
+export default abstract class Test {
   public items: Item[] = new Items({ category: ['All'] }).map((item: Item) => {
     item.namePrepared = item.name.toLowerCase()
     return item;
   });
-  public times: TestParams['times'];
-  public testName: TestParams['testName'];
-  public testFunc: TestParams['testFunc'];
-  public preparationFunc: TestParams['preparationFunc'];
+  public abstract testName: TestParams['testName'];
+  protected abstract times: number;
+  protected abstract inputsList: string[];
 
-  constructor(public inputsList: string[], { times, testName, testFunc, preparationFunc }: TestParams) {
-    this.times = times;
-    this.testName = testName;
-    this.testFunc = testFunc;
-    this.preparationFunc = preparationFunc;
-  }
+  protected abstract async testFunc(input: string): Promise<Test['items']>;
+
+  protected preparationFunc(): void { };
 
   async exec() {
-    const { times, testName, testFunc, preparationFunc } = this;
+    const { times, testName } = this;
 
     const generateInput = (): string => (
       this.inputsList[Math.round(Math.random() * (this.inputsList.length - 1))]);
-    
-    if (preparationFunc) preparationFunc(this.items);
+
+    this.preparationFunc();
 
     const start = new Date();
-    const result = Array.from({ length: times }, () => testFunc(generateInput(), this.items));
+    const result = await Promise.all(Array.from({ length: times }, () => this.testFunc(generateInput())));
     return { time: Date.now() - start.getTime(), data: result, name: testName };
   }
 }
