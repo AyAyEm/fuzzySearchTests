@@ -19,10 +19,14 @@
     "fuzzy-search": "^3.2.1",
     "fuzzyset.js": "^1.0.5",
     "fuzzysort": "^1.1.4",
+    "leven": "^3.1.0",
     "lunr": "^2.3.9",
-    "microjob": "^0.7.0",
     "node-ts": "^5.0.8",
+    "object-sizeof": "^1.6.1",
     "typescript": "^4.0.2",
     "warframe-items": "^1.1128.0"
+  },
+  "devDependencies": {
+    "@types/fuzzy-search": "^2.1.0"
   }
 }

@@ -1,7 +1,7 @@
 import testsList from './tests';
 import { inputs } from './generalInputs';
 
-type TestResult = { time: number, name: string, result: any[] };
+type TestResult = { time: number, name: string, result: any[], memory: string };
 type TestFunction = (executionTimes: number) => Promise<TestResult[]>;
 
 async function timeTest(executionTimes = 1) {
@@ -17,9 +17,9 @@ async function logTests(testFunction: TestFunction, executionTimes: number, logF
   const results = await testFunction(executionTimes);
   const resultsString = results
     .sort(({ time: a }, { time: b }) => a > b ? 1 : -1)
-    .map(({ time, name }, index) => (
+    .map(({ time, name, memory }, index) => (
       `${index + 1}. ${name}: ${time / executionTimes}ms/op `
-      + `in ${executionTimes} op(s) took ${time}ms`))
+      + `in ${executionTimes} op(s) took ${time}ms ${memory}`))
     .join('\n');
 
   logFunc(resultsString);
