@@ -14,6 +14,4 @@ class ArrayFilterTest extends Test {
   };
 }
 
-export default function (times: number, inputsList: string[]) {
-  return new ArrayFilterTest(times, inputsList).exec();
-}
+export default (times: number, inputList: string[]) => new ArrayFilterTest(times, inputList).exec();

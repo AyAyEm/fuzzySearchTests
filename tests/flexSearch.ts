@@ -27,6 +27,4 @@ class FlexSearchTest extends Test {
   };
 }
 
-export default function flexSearchTest(times: number, inputList: string[]) {
-  return new FlexSearchTest(times, inputList).exec();
-}
+export default (times: number, inputList: string[]) => new FlexSearchTest(times, inputList).exec();

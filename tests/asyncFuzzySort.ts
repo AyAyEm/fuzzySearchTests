@@ -18,6 +18,4 @@ class AsyncFuzzySortTest extends Test {
   }
 }
 
-export default function asyncFuzzySortTest(times: number, inputList: string[]) {
-  return new AsyncFuzzySortTest(times, inputList).exec();
-}
+export default (times: number, inputList: string[]) => new AsyncFuzzySortTest(times, inputList).exec();

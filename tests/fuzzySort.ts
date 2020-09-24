@@ -46,6 +46,5 @@ class FuzzySortTest extends Test {
   }
 }
 
-export default function fuzzySortTest(times: number, inputList: string[]) {
-  return new FuzzySortTest(times, inputList).exec();
-}
+export default (times: number, inputList: string[]) => new FuzzySortTest(times, inputList).exec();
+
