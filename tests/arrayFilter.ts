@@ -1,22 +1,17 @@
-import Items from 'warframe-items';
-import { getRandomInput } from './generalInputs';
-  
-type Item = Items[0] & {
-  namePrepared?: string,
-}
+import Test from './_baseTest';
 
-const items: Item[] = new Items({ category: ['All'] });
-
-export default function arrayFilterTest(times: number) {
-  const start = new Date();
-
+const testFunc = (input: string, items: Test['items']) => {
   const result = [];
-  for(let i = 0; i < times; i += 1) {
-    const input = getRandomInput();
-    for (let j = 0; j < items.length; j += 1) {
-      if (items[j].name.toLowerCase() === input) result.push(items[j]);
-    }
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].namePrepared === input) result.push(items[i]);
   }
+  return result;
+};
 
-  return  { time: Date.now() - start.getTime(), data: result, name: 'arrayFilter' };
+export default function arrayFilterTest(times: number, inputList: string[]) {
+  return new Test(inputList, {
+    times,
+    testFunc,
+    testName: 'arrayFilter',
+  }).exec();
 }
