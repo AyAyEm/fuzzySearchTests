@@ -1,17 +1,19 @@
 import Test from './_baseTest';
 
-const testFunc = (input: string, items: Test['items']) => {
-  const result = [];
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].namePrepared === input) result.push(items[i]);
-  }
-  return result;
-};
+class ArrayFilterTest extends Test {
+  public testName = 'arrayFilter';
 
-export default function arrayFilterTest(times: number, inputList: string[]) {
-  return new Test(inputList, {
-    times,
-    testFunc,
-    testName: 'arrayFilter',
-  }).exec();
+  constructor(public times: number, public inputsList: string[]) { super() }
+
+  async testFunc(input: string) {
+    const result = [];
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].namePrepared === input) result.push(this.items[i]);
+    }
+    return result;
+  };
+}
+
+export default function (times: number, inputsList: string[]) {
+  return new ArrayFilterTest(times, inputsList).exec();
 }

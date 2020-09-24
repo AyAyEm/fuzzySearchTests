@@ -1,22 +1,18 @@
-const FuzzySearch = require('fuzzy-search');
-import Items from 'warframe-items';
-import { getRandomInput } from '../generalInputs';
-  
-type Item = Items[0] & {
-  namePrepared?: string,
+import FuzzySearch from 'fuzzy-search';
+import Test from './_baseTest';
+
+class ArrayFilterTest extends Test {
+  public testName = 'fuzzySearch';
+
+  private index = new FuzzySearch(this.items, ['namePrepared'], { sort: true });
+
+  constructor(public times: number, public inputsList: string[]) { super() }
+
+  async testFunc(input: string) {
+    return this.index.search(input);
+  };
 }
 
-const items: Item[] = new Items({ category: ['All'] });
-
-export default function fuzzySearchTest(times: number) {
-  const fuzzySearch = new FuzzySearch(items, ['namePrepared'], { sort: true });
-  items.forEach((item) => item.namePrepared = item.name.toLowerCase());
-  const start = new Date();
-
-  const result = [];
-  for(let i = 0; i < times; i += 1) {
-    result.push(fuzzySearch.search(getRandomInput()));
-  }
-
-  return  { time: Date.now() - start.getTime(), name: 'fuzzySearch', data: result };
+export default function arrayFilterTest(times: number, inputsList: string[]) {
+  return new ArrayFilterTest(times, inputsList).exec();
 }

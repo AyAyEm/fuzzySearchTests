@@ -1,32 +1,32 @@
-const FlexSearch = require('flexsearch');
-import Items from 'warframe-items';
-import { getRandomInput } from '../generalInputs';
-  
-type Item = Items[0] & {
-  namePrepared?: string,
-}
+import FlexSearch from 'flexsearch';
+import Test from './_baseTest';
 
-const items: Item[] = new Items({ category: ['All'] });
+class FlexSearchTest extends Test {
+  public testName = 'flexSearch';
 
-export default function flexSearchTest(times: number) {
-  const flexSearchIndex = new FlexSearch({
+  private index = FlexSearch.create({
     encode: 'extra',
     tokenize: 'strict',
     threshold: 1,
     resolution: 9,
     depth: 4,
+    async: false,
   });
-  items.forEach((item, index) => flexSearchIndex.add(index, item.name));
-  const start = new Date();
 
-  const result = [];
-  for (let i = 0; i < times; i += 1) {
-    const input = getRandomInput();
-    result.push(flexSearchIndex.search({
+  constructor(public times: number, public inputsList: string[]) { super() }
+
+  async testFunc(input: string) {
+    return [this.index.search({
       query: input,
       field: ['name'],
-    }).map((index: number) => items[index]));
+    }) as any].map((resultIndex: number) => this.items[resultIndex]);
   }
 
-  return { time: Date.now() - start.getTime(), name: 'flexSearch', data: result };
+  preparationFunc() {
+    this.items.forEach((item, index) => this.index.add(index, item.name))
+  };
+}
+
+export default function flexSearchTest(times: number, inputList: string[]) {
+  return new FlexSearchTest(times, inputList).exec();
 }

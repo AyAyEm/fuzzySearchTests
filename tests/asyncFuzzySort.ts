@@ -1,18 +1,23 @@
 import fuzzySort from 'fuzzysort';
 import Test from './_baseTest';
 
-const testFunc = (input: string, items: Test['items']) => {
-  const fuzzyOptions = { key: 'namePrepared' };
-  return fuzzySort.goAsync(input, items, fuzzyOptions)
-};
+class AsyncFuzzySortTest extends Test {
+  public testName = 'async fuzzySort';
 
-const preparationFunc = (items: any[]) => items.forEach((item) => item.namePrepared = fuzzySort.prepare(item.name));
+  constructor(public times: number, public inputsList: string[]) { super() }
 
-export default function arrayFilterTest(times: number, inputList: string[]) {
-  return new Test(inputList, {
-    times,
-    preparationFunc,
-    testFunc,
-    testName: 'async FuzzySort',
-  }).exec();
+  async testFunc(input: string) {
+    const fuzzyOptions = { keys: ['namePrepared'] };
+    return fuzzySort
+      .goAsync(input, this.items, fuzzyOptions)
+      .then((result) => result.map(({ obj }) => obj));
+  };
+
+  preparationFunc() {
+    this.items.forEach((item) => item.namePrepared = fuzzySort.prepare(item.name));
+  }
+}
+
+export default function asyncFuzzySortTest(times: number, inputList: string[]) {
+  return new AsyncFuzzySortTest(times, inputList).exec();
 }
