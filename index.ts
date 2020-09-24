@@ -1,12 +1,17 @@
-import tests from './tests';
+import testsList from './tests';
 import { inputs } from './generalInputs';
 
-async function timeTest(executionTime = 1) {
-  const ongoingTests = (await tests).map((functionTest) => functionTest(executionTime, inputs));
-  return Promise.all(ongoingTests);
-}
+type TestResult = { time: number, name: string, result: any[] };
+type TestFunction = (executionTimes: number) => Promise<TestResult[]>;
 
-type TestFunction = (executionTimes: number) => Promise<{ time: number, name: string, result: any[] } []>;
+async function timeTest(executionTimes = 1) {
+  const results: TestResult[] = [];
+  const tests = await testsList;
+  for (let i = 0; i < tests.length; i++) {
+    results.push(await tests[i](executionTimes, inputs));
+  }
+  return results;
+}
 
 async function logTests(testFunction: TestFunction, executionTimes: number, logFunc = console.log) {
   const results = await testFunction(executionTimes);
