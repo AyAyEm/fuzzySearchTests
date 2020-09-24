@@ -1,23 +1,18 @@
-const fuzzySort = require('fuzzysort');
-import Items from 'warframe-items';
-import { getRandomInput } from '../generalInputs';
-  
-type Item = Items[0] & {
-  namePrepared?: string,
-}
+import fuzzySort from 'fuzzysort';
+import Test from './_baseTest';
 
-const items: Item[] = new Items({ category: ['All'] });
-
-export default function asyncFuzzySortTest(times: number = 1) {
+const testFunc = (input: string, items: Test['items']) => {
   const fuzzyOptions = { key: 'namePrepared' };
-  items.forEach((item) => item.namePrepared = fuzzySort.prepare(item.name));
+  return fuzzySort.goAsync(input, items, fuzzyOptions)
+};
 
-  const start = new Date();
-  const fuzzySortFunction = () => fuzzySort.goAsync(getRandomInput(), items, fuzzyOptions)
-  const searchPromises = new Array(times)
-    .fill(fuzzySortFunction)
-    .map((func) => func());
+const preparationFunc = (items: any[]) => items.forEach((item) => item.namePrepared = fuzzySort.prepare(item.name));
 
-  return Promise.all(searchPromises).then((data) => ({ 
-    time: Date.now() - start.getTime(), name: 'asyncFuzzySort', data }));
+export default function arrayFilterTest(times: number, inputList: string[]) {
+  return new Test(inputList, {
+    times,
+    preparationFunc,
+    testFunc,
+    testName: 'async FuzzySort',
+  }).exec();
 }
