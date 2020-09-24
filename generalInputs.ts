@@ -1,9 +1,9 @@
-const inputs: string[] = [
+export const inputs: string[] = [
   'ignis', 'valkyr', 'rhino', 'valkyr prime', 'aksomati', 'soma',
   'soma prime', 'akboltor', 'flow', 'carrier', 'carrier prime',
 ];
 
-const wrongInputs: string[] = [
+export const wrongInputs: string[] = [
   'valkkity', 'aksometi', 'carriar', 'flaw', 'suma', 'iginis',
 ];
 
