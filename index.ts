@@ -1,7 +1,8 @@
 import tests from './tests';
+import { inputs } from './generalInputs';
 
 async function timeTest(executionTime = 1) {
-  const ongoingTests = (await tests).map((functionTest) => functionTest(executionTime));
+  const ongoingTests = (await tests).map((functionTest) => functionTest(executionTime, inputs));
   return Promise.all(ongoingTests);
 }
 
