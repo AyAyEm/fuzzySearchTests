@@ -27,6 +27,12 @@
     "warframe-items": "^1.1128.0"
   },
   "devDependencies": {
-    "@types/fuzzy-search": "^2.1.0"
+    "@types/fuzzy-search": "^2.1.0",
+    "@types/fuzzyset.js": "0.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
   }
 }

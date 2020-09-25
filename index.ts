@@ -7,7 +7,7 @@ type TestFunction = (executionTimes: number) => Promise<TestResult[]>;
 async function timeTest(executionTimes = 1) {
   const results: TestResult[] = [];
   const tests = await testsList;
-  for (let i = 0; i < tests.length; i++) {
+  for (let i = 0; i < tests.length; i += 1) {
     results.push(await tests[i](executionTimes, inputs));
   }
   return results;
@@ -16,7 +16,7 @@ async function timeTest(executionTimes = 1) {
 async function logTests(testFunction: TestFunction, executionTimes: number, logFunc = console.log) {
   const results = await testFunction(executionTimes);
   const resultsString = results
-    .sort(({ time: a }, { time: b }) => a > b ? 1 : -1)
+    .sort(({ time: a }, { time: b }) => (a > b ? 1 : -1))
     .map(({ time, name, memory }, index) => (
       `${index + 1}. ${name}: ${time / executionTimes}ms/op `
       + `in ${executionTimes} op(s) took ${time}ms ${memory}`))
