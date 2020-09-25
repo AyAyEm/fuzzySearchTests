@@ -29,4 +29,3 @@ class FuzzySetJsTest extends Test {
 }
 
 export default (times: number, inputList: string[]) => new FuzzySetJsTest(times, inputList).exec();
-new FuzzySetJsTest(1, ['carrier prime']).exec().then(console.log);
