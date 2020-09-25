@@ -19,6 +19,7 @@ class FlexSearchTest extends Test {
     return [this.index.search({
       query: input,
       field: ['name'],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any].map((resultIndex: number) => this.items[resultIndex]);
   }
 
