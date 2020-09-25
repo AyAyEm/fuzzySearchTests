@@ -18,7 +18,7 @@ class FuzzySetJsTest extends Test {
 
     const result: Test['items'] = [];
     if (possibilities) {
-      possibilities.forEach(([_score, itemName]: [number, string]) => {
+      possibilities.forEach(({ 1: itemName }: [number, string]) => {
         const index = this.nameIndexMap.get(itemName);
         if (index) result.push(this.items[index]);
       });
