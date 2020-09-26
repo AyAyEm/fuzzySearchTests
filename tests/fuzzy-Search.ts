@@ -2,7 +2,7 @@ import FuzzySearch from 'fuzzy-search';
 import Test from './_baseTest';
 
 class ArrayFilterTest extends Test {
-  public testName = 'fuzzySearch';
+  public testName = 'fuzzy-search';
 
   private index = new FuzzySearch(this.items, ['namePrepared'], { sort: true });
 
