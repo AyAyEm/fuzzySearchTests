@@ -1,26 +1,22 @@
-const Fuse = require('fuse.js');
-import Items from 'warframe-items';
-import { getRandomInput } from './generalInputs';
-  
-type Item = Items[0] & {
-  namePrepared?: string,
-}
+import Fuse from 'fuse.js';
+import Test from './_baseTest';
 
-const items: Item[] = new Items({ category: ['All'] });
+class FuseJsTest extends Test {
+  public testName = 'arrayFilter';
 
-export default function fuseJsTest(times: number) {
-  items.forEach((item: Item) => item.namePrepared = item.name.toLowerCase());
-  const fuse = new Fuse(items, {
+  private fuse = new Fuse(this.items, {
     keys: ['namePrepared'],
     shouldSort: true,
     isCaseSensitive: false,
   });
-  const start = new Date();
 
-  const result = [];
-  for(let i = 0; i < times; i += 1) {
-    result.push(fuse.search(getRandomInput()));
+  constructor(public times: number, public inputsList: string[]) { super(); }
+
+  async testFunc(input: string) {
+    return this.fuse.search(input).map(({ item }) => item);
   }
+}
 
-  return { time: Date.now() - start.getTime(), name: 'fuseJs', data: result };
+export default function fuseJsTest(times: number, inputList: string[]) {
+  return new FuseJsTest(times, inputList).exec();
 }
