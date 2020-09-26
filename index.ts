@@ -1,7 +1,7 @@
 import testsList from './tests';
 import { inputs } from './generalInputs';
 
-type TestResult = { time: number, name: string, result: any[], memory: string };
+type TestResult = { time: number, name: string, result: unknown[], memory: string };
 type TestFunction = (executionTimes: number) => Promise<TestResult[]>;
 
 async function timeTest(executionTimes = 1) {
