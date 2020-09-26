@@ -22,7 +22,7 @@ export default abstract class Test {
 
   protected abstract async testFunc(input: string): Promise<Test['items']>;
 
-  async exec(): Promise<{ time: number, name: string, data: unknown[], memory: string }> {
+  async exec(): Promise<{ time: number, name: string, data: Item[][], memory: string }> {
     const { times, testName } = this;
 
     const generateInput = (): string => (
