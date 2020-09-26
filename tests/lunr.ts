@@ -19,8 +19,12 @@ class LunrTest extends Test {
   }
 
   async testFunc(input: string) {
+    const fuzziness = 2;
     return this.lunrIndex
-      .search(input)
+      .search(input
+        .split(' ')
+        .map((word: string) => word.concat(`~${fuzziness}`))
+        .join(' '))
       .map(({ ref }: { ref: string }) => this.items[Number(ref)]);
   }
 }
