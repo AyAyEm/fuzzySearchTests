@@ -4,7 +4,7 @@ import Test from './_baseTest';
 class FuzzySortTest extends Test {
   public testName = 'fuzzySort';
 
-  constructor(public times: number, public inputsList: string[]) { super(); }
+  constructor(public times: number, public getInput: () => string) { super(); }
 
   async testFunc(input: string) {
     const fuzzyOptions = { keys: ['namePrepared'] };
@@ -17,4 +17,6 @@ class FuzzySortTest extends Test {
   }
 }
 
-export default (times: number, inputList: string[]) => new FuzzySortTest(times, inputList).exec();
+export default function fuzzySortTest(times: number, getInput: () => string) {
+  return new FuzzySortTest(times, getInput).exec();
+}

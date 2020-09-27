@@ -6,7 +6,7 @@ class LunrTest extends Test {
 
   private lunrIndex: ReturnType<typeof lunr>;
 
-  constructor(public times: number, public inputsList: string[]) {
+  constructor(public times: number, public getInput: () => string) {
     super();
 
     const { items } = this;
@@ -29,6 +29,6 @@ class LunrTest extends Test {
   }
 }
 
-export default function lunrTest(times: number, inputList: string[]) {
-  return new LunrTest(times, inputList).exec();
+export default function lunrTest(times: number, getInput: () => string) {
+  return new LunrTest(times, getInput).exec();
 }

@@ -13,7 +13,7 @@ class FlexSearchTest extends Test {
     async: false,
   });
 
-  constructor(public times: number, public inputsList: string[]) { super(); }
+  constructor(public times: number, public getInput: () => string) { super(); }
 
   async testFunc(input: string) {
     return [this.index.search({
@@ -28,4 +28,6 @@ class FlexSearchTest extends Test {
   }
 }
 
-export default (times: number, inputList: string[]) => new FlexSearchTest(times, inputList).exec();
+export default function flexSearchTest(times: number, getInput: () => string) {
+  return new FlexSearchTest(times, getInput).exec();
+}

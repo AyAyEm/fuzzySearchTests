@@ -16,7 +16,7 @@ export default abstract class Test {
 
   protected abstract times: number;
 
-  protected abstract inputsList: string[];
+  protected abstract getInput: () => string;
 
   protected preparationFunc(): void { }
 
@@ -25,15 +25,12 @@ export default abstract class Test {
   async exec(): Promise<{ time: number, name: string, data: Item[][], memory: string }> {
     const { times, testName } = this;
 
-    const generateInput = (): string => (
-      this.inputsList[Math.round(Math.random() * (this.inputsList.length - 1))]);
-
     this.preparationFunc();
     const memoryUsage = `${((sizeof(this) - sizeof(Test)) / 1e6).toFixed(2)}MB`;
 
     const start = new Date();
     const result = await Promise.all(
-      Array.from({ length: times }, () => this.testFunc(generateInput())),
+      Array.from({ length: times }, () => this.testFunc(this.getInput())),
     );
     return {
       time: Date.now() - start.getTime(), data: result, name: testName, memory: memoryUsage,

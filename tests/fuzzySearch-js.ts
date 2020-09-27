@@ -18,7 +18,7 @@ class FuzzySearchJsTest extends Test {
     ({ namePrepared }, index) => [namePrepared, index],
   ));
 
-  constructor(public times: number, public inputsList: string[]) { super(); }
+  constructor(public times: number, public getInput: () => string) { super(); }
 
   preparationFunc() {
     // this.fuzzySearchJs.addModule(levenshteinFS());
@@ -33,6 +33,6 @@ class FuzzySearchJsTest extends Test {
   }
 }
 
-export default function fuzzySearchJsTest(times: number, inputList: string[]) {
-  return new FuzzySearchJsTest(times, inputList).exec();
+export default function fuzzySearchJsTest(times: number, getInput: () => string) {
+  return new FuzzySearchJsTest(times, getInput).exec();
 }

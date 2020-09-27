@@ -11,7 +11,7 @@ class FuzzySetJsTest extends Test {
     ({ namePrepared }, index) => [namePrepared, index],
   ));
 
-  constructor(public times: number, public inputsList: string[]) { super(); }
+  constructor(public times: number, public getInput: () => string) { super(); }
 
   async testFunc(input: string) {
     const possibilities = this.fuzzySet.get(input);
@@ -28,4 +28,6 @@ class FuzzySetJsTest extends Test {
   }
 }
 
-export default (times: number, inputList: string[]) => new FuzzySetJsTest(times, inputList).exec();
+export default function fuzzySetJsTest(times: number, getInput: () => string) {
+  return new FuzzySetJsTest(times, getInput).exec();
+}

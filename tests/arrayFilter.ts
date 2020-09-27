@@ -3,7 +3,7 @@ import Test from './_baseTest';
 class ArrayFilterTest extends Test {
   public testName = 'arrayFilter';
 
-  constructor(public times: number, public inputsList: string[]) { super(); }
+  constructor(public times: number, public getInput: () => string) { super(); }
 
   async testFunc(input: string) {
     const result = [];
@@ -14,6 +14,6 @@ class ArrayFilterTest extends Test {
   }
 }
 
-export default function arrayFilterTest(times: number, inputList: string[]) {
-  return new ArrayFilterTest(times, inputList).exec();
+export default function arrayFilterTest(times: number, getInput: () => string) {
+  return new ArrayFilterTest(times, getInput).exec();
 }

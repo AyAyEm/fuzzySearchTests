@@ -10,13 +10,13 @@ class FuseJsTest extends Test {
     isCaseSensitive: false,
   });
 
-  constructor(public times: number, public inputsList: string[]) { super(); }
+  constructor(public times: number, public getInput: () => string) { super(); }
 
   async testFunc(input: string) {
     return this.fuse.search(input).map(({ item }) => item);
   }
 }
 
-export default function fuseJsTest(times: number, inputList: string[]) {
-  return new FuseJsTest(times, inputList).exec();
+export default function fuseJsTest(times: number, getInput: () => string) {
+  return new FuseJsTest(times, getInput).exec();
 }
