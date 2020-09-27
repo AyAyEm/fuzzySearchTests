@@ -1,11 +1,9 @@
 import * as fs from 'fs';
+import type { TestFunction } from '../src/index';
 
 const fsPromises = fs.promises;
 
 const blackListFiles = ['index.ts', 'generalInputs.ts'];
-
-type TestResult = { time: number, name: string, result: unknown[], memory: string };
-type TestFunction = (executionTimes: number, getFunc: () => string) => Promise<TestResult>;
 
 const testFunctions: Promise<TestFunction[]> = fsPromises.readdir('./tests')
   .then((files: string[]) => files
