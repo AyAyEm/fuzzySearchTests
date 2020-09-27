@@ -28,7 +28,7 @@ export default abstract class Test {
     const generateInput = (): string => (
       this.inputsList[Math.round(Math.random() * (this.inputsList.length - 1))]);
 
-    if (this.preparationFunc) this.preparationFunc();
+    this.preparationFunc();
     const memoryUsage = `${((sizeof(this) - sizeof(Test)) / 1e6).toFixed(2)}MB`;
 
     const start = new Date();
