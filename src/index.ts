@@ -2,7 +2,7 @@ import _ from 'lodash';
 import type Items from 'warframe-items';
 import fuzzySort from 'fuzzysort';
 import testsList from '../tests';
-import { inputs } from './generalInputs';
+import { inputs, stringRandomizer } from './utils';
 
 type Item = Items[0] & {
   namePrepared?: string | ReturnType<typeof fuzzySort.prepare>,
@@ -22,15 +22,6 @@ async function timeTest(executionTimes = 1) {
   }
 
   return results;
-}
-
-function stringRandomizer(input: string, times = 1): string {
-  const result: string[] = input.split('');
-  for (let i = 0; i < times; i += 1) {
-    result[_.random(0, result.length - 1)] = String.fromCharCode(_.random(97, 122));
-  }
-
-  return result.join('');
 }
 
 async function accuracyTest() {
