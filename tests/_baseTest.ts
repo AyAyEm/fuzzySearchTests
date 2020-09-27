@@ -22,7 +22,7 @@ export default abstract class Test {
 
   protected abstract async testFunc(input: string): Promise<Test['items']>;
 
-  async exec(): Promise<{ time: number, name: string, data: Item[][], memory: string }> {
+  async exec() {
     const { times, testName } = this;
 
     this.preparationFunc();
