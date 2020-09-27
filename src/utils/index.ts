@@ -1,2 +1,2 @@
-export { inputs } from './generalInputs';
+export { inputs } from './inputs';
 export { stringRandomizer } from './stringRandomizer';
