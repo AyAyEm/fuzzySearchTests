@@ -10,7 +10,7 @@ type TestFunction = (executionTimes: number, getFunc: () => string) => Promise<T
 const testFunctions: Promise<TestFunction[]> = fsPromises.readdir('./tests')
   .then((files: string[]) => files
     .filter((fileName) => fileName[0] !== '_' && !blackListFiles.includes(fileName))
-    .map((fileName) => import(`./${fileName}`)))
+    .map((fileName) => import(`./${fileName.split('.')[0]}`)))
   .then((tests) => Promise.all(tests))
   .then((tests) => tests.map((test) => test.default));
 
