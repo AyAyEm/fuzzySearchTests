@@ -4,7 +4,10 @@ const fsPromises = fs.promises;
 
 const blackListFiles = ['index.ts', 'generalInputs.ts'];
 
-const testFunctions = fsPromises.readdir('./tests')
+type TestResult = { time: number, name: string, result: unknown[], memory: string };
+type TestFunction = (executionTimes: number, getFunc: () => string) => Promise<TestResult>;
+
+const testFunctions: Promise<TestFunction[]> = fsPromises.readdir('./tests')
   .then((files: string[]) => files
     .filter((fileName) => fileName[0] !== '_' && !blackListFiles.includes(fileName))
     .map((fileName) => import(`./${fileName}`)))
