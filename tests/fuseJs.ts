@@ -2,7 +2,7 @@ import Fuse from 'fuse.js';
 import Test from './_baseTest';
 
 class FuseJsTest extends Test {
-  public testName = 'arrayFilter';
+  public testName = 'fuseJs';
 
   private fuse = new Fuse(this.items, {
     keys: ['namePrepared'],
