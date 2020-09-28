@@ -4,6 +4,10 @@ function randomNumber(lower = 0, upper = 1): number {
 
 /**
  * Rolls n times random letters in the string
+ *
+ * @param { string } input string to randomize
+ * @param { number } times how much times to random
+ *
  */
 export function stringRandomizer(input: string, times = 1): string {
   if (!/[a-z]/gi.test(input)) {
