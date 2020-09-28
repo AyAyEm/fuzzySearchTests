@@ -28,14 +28,14 @@ async function accuracyTest(randomFactor = 1) {
     (input: string) => stringRandomizer(input, { uppercase: false, times: randomFactor }),
   );
 
-  const getWrongInputFunc: () => () => string = () => {
+  function getWrongInput(): () => string {
     let index = 0;
     return () => {
       const input = wrongInputs[index];
       index += 1;
       return input;
     };
-  };
+  }
 
   function getAccuracy<T = string>([originalList, resultedList]: [T[], T[]]): number {
     const matches: number = resultedList.reduce((matchCount: number, item, index) => {
@@ -46,7 +46,7 @@ async function accuracyTest(randomFactor = 1) {
   }
 
   const results = await Promise.all((await testsList).map((test) => (
-    test((inputs.length), getWrongInputFunc()))));
+    test((inputs.length), getWrongInput()))));
 
   return new Map(results.map((result) => {
     const resultedList = result.data.map(([firstResult]) => firstResult?.namePrepared);
