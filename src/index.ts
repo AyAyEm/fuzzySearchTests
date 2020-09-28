@@ -25,7 +25,7 @@ async function timeTest(executionTimes = 1) {
 
 async function accuracyTest(randomFactor = 1) {
   const wrongInputs: string[] = inputs.map(
-    (input: string) => stringRandomizer(input, randomFactor),
+    (input: string) => stringRandomizer(input, { uppercase: false, times: randomFactor }),
   );
 
   const getWrongInputFunc: () => () => string = () => {
@@ -65,7 +65,7 @@ async function logTests(
       + `in ${executionTimes} op(s) took ${time}ms ${memory}`))
     .join('\n');
 
-  const accuracyResults = await accuracyTest(0);
+  const accuracyResults = await accuracyTest(1);
   const accuracyResultsOutput = [...accuracyResults.entries()]
     .sort(({ 1: a }, { 1: b }) => (a > b ? -1 : 1))
     .map(([name, accuracy], index) => `${index + 1}. ${name}: ${accuracy.toFixed(2)}%`)
@@ -74,4 +74,4 @@ async function logTests(
   logFunc(`Time test:\n${timeResultsOutput}\n\n`
     + `Accuracy test\n${accuracyResultsOutput}`);
 }
-logTests(Number(process.argv[2]) || 10);
+logTests(Number(process.argv[2]) || 1000);
