@@ -28,7 +28,7 @@ async function accuracyTest(randomFactor = 1) {
     (input: string) => stringRandomizer(input, { uppercase: false, times: randomFactor }),
   );
 
-  function getWrongInput(): () => string {
+  function generateWrongInputFunc(): () => string {
     let index = 0;
     return () => {
       const input = wrongInputs[index];
@@ -46,7 +46,7 @@ async function accuracyTest(randomFactor = 1) {
   }
 
   const results = await Promise.all((await testsList).map((test) => (
-    test((inputs.length), getWrongInput()))));
+    test((inputs.length), generateWrongInputFunc()))));
 
   return new Map(results.map((result) => {
     const resultedList = result.data.map(([firstResult]) => firstResult?.namePrepared);
