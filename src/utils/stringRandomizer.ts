@@ -19,10 +19,11 @@ interface Options {
  */
 
 export function stringRandomizer(input: string, options?: Options): string {
-  const { uppercase = false, times = 1 } = options || {};
   if (!/[a-z]/gi.test(input)) {
     throw new Error(`Invalid input string: ${input} must have at least one [a-z] character`);
   }
+
+  const { uppercase = false, times = 1 } = options || {};
 
   function getValidIndex(): number {
     const whiteListIndex = [...input.matchAll(/[a-z]{1}/gi)]
