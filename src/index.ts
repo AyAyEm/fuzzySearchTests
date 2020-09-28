@@ -11,7 +11,6 @@ type Item = Items[0] & {
 export interface TestResult { time: number, name: string, data: Item[][], memory: string }
 export type TestFunction = (
   (executionTimes: number, getInput: () => string) => Promise<TestResult>);
-type GroupTestFunction = (executionTimes: number) => Promise<TestResult[]>;
 
 async function timeTest(executionTimes = 1) {
   const results = [];
@@ -24,8 +23,10 @@ async function timeTest(executionTimes = 1) {
   return results;
 }
 
-async function accuracyTest() {
-  const wrongInputs: string[] = inputs.map((input: string) => stringRandomizer(input));
+async function accuracyTest(randomFactor = 1) {
+  const wrongInputs: string[] = inputs.map(
+    (input: string) => stringRandomizer(input, randomFactor),
+  );
 
   const getWrongInputFunc: () => () => string = () => {
     let index = 0;
@@ -49,7 +50,6 @@ async function accuracyTest() {
 
   return new Map(results.map((result) => {
     const resultedList = result.data.map(([firstResult]) => firstResult?.namePrepared);
-    if (result.name === 'arrayFilter') console.log(resultedList, result.name);
     return [result.name, getAccuracy([inputs, resultedList])];
   }));
 }
@@ -58,15 +58,20 @@ async function logTests(
   executionTimes: number, logFunc = console.log,
 ) {
   const timeResults = await timeTest(executionTimes);
-  const accuracyResults = await accuracyTest();
-  const resultsString = timeResults
+  const timeResultsOutput = timeResults
     .sort(({ time: a }, { time: b }) => (a > b ? 1 : -1))
     .map(({ time, name, memory }, index) => (
       `${index + 1}. ${name}: ${time / executionTimes}ms/op `
       + `in ${executionTimes} op(s) took ${time}ms ${memory}`))
     .join('\n');
 
-  logFunc(resultsString);
+  const accuracyResults = await accuracyTest(0);
+  const accuracyResultsOutput = [...accuracyResults.entries()]
+    .sort(({ 1: a }, { 1: b }) => (a > b ? -1 : 1))
+    .map(([name, accuracy], index) => `${index + 1}. ${name}: ${accuracy.toFixed(2)}%`)
+    .join('\n');
+
+  logFunc(`Time test:\n${timeResultsOutput}\n\n`
+    + `Accuracy test\n${accuracyResultsOutput}`);
 }
-// logTests(timeTest, Number(process.argv[2]) || 1000);
-accuracyTest().then(console.log);
+logTests(Number(process.argv[2]) || 10);
