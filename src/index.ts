@@ -36,30 +36,30 @@ async function accuracyTest() {
     };
   };
 
-  function getAccuracy<T = string>([originalList, resultedList]: [T[], T[]]) {
-    return resultedList.reduce((accuracy: number, item, index) => (
-      (item === originalList[index] ? accuracy : accuracy - (100 / originalList.length))), 100);
+  function getAccuracy<T = string>([originalList, resultedList]: [T[], T[]]): number {
+    const matches: number = resultedList.reduce((matchCount: number, item, index) => {
+      if (item === originalList[index]) return matchCount + 1;
+      return matchCount;
+    }, 0);
+    return (100 / originalList.length) * matches;
   }
 
-  const tests = await testsList;
-  const results = await Promise.all(tests.map(async (test) => {
-    const result = await test((inputs.length - 1), getWrongInputFunc());
-    return {
-      name: result.name,
-      data: result.data.map(([firstResult]) => firstResult?.namePrepared),
-    };
-  }));
+  const results = await Promise.all((await testsList).map((test) => (
+    test((inputs.length), getWrongInputFunc()))));
+
   return new Map(results.map((result) => {
-    const accuracy = getAccuracy([inputs, result.data]);
-    return [result.name, accuracy];
+    const resultedList = result.data.map(([firstResult]) => firstResult?.namePrepared);
+    if (result.name === 'arrayFilter') console.log(resultedList, result.name);
+    return [result.name, getAccuracy([inputs, resultedList])];
   }));
 }
 
 async function logTests(
-  groupTestFunction: GroupTestFunction, executionTimes: number, logFunc = console.log,
+  executionTimes: number, logFunc = console.log,
 ) {
-  const results = await groupTestFunction(executionTimes);
-  const resultsString = results
+  const timeResults = await timeTest(executionTimes);
+  const accuracyResults = await accuracyTest();
+  const resultsString = timeResults
     .sort(({ time: a }, { time: b }) => (a > b ? 1 : -1))
     .map(({ time, name, memory }, index) => (
       `${index + 1}. ${name}: ${time / executionTimes}ms/op `
