@@ -50,8 +50,17 @@ async function accuracyTest(randomFactor = 1) {
 
   return new Map(results.map((result) => {
     const resultedList = result.data.map(([firstResult]) => firstResult?.namePrepared);
+    // if (result.name === 'flexSearch') console.log(result.data, wrongInputs);
     return [result.name, getAccuracy([inputs, resultedList])];
   }));
+}
+
+async function memoryTest() {
+  const tests = await testsList;
+  const results = await Promise.all(tests.map((test) => test(1, () => inputs[0])));
+  const memoryUsage = results.map(({ name, memory }) => [name, memory]);
+
+  return memoryUsage;
 }
 
 async function logTests(
@@ -60,9 +69,9 @@ async function logTests(
   const timeResults = await timeTest(executionTimes);
   const timeResultsOutput = timeResults
     .sort(({ time: a }, { time: b }) => (a > b ? 1 : -1))
-    .map(({ time, name, memory }, index) => (
+    .map(({ time, name }, index) => (
       `${index + 1}. ${name}: ${time / executionTimes}ms/op `
-      + `in ${executionTimes} op(s) took ${time}ms ${memory}`))
+      + `in ${executionTimes} op(s) took ${time}ms`))
     .join('\n');
 
   const accuracyResults = await accuracyTest(1);
@@ -71,7 +80,14 @@ async function logTests(
     .map(([name, accuracy], index) => `${index + 1}. ${name}: ${accuracy.toFixed(2)}%`)
     .join('\n');
 
+  const memoryResults = await memoryTest();
+  const memoryResultsOutput = memoryResults
+    .sort(({ 1: a }, { 1: b }) => (a < b ? -1 : 1))
+    .map(([name, memory], index) => `${index + 1}. ${name}: ${memory}`)
+    .join('\n');
+
   logFunc(`Time test:\n${timeResultsOutput}\n\n`
-    + `Accuracy test\n${accuracyResultsOutput}`);
+    + `Accuracy test\n${accuracyResultsOutput}\n\n`
+    + `Memory test\n${memoryResultsOutput}`);
 }
 logTests(Number(process.argv[2]) || 1000);
