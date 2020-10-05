@@ -1,6 +1,6 @@
 import Test from './_baseTest';
 
-class ArrayFilterTest extends Test {
+export default class ArrayFilterTest extends Test {
   public testName = 'JavaScript-arrayFilter';
 
   constructor(public times: number, public getInput: () => string) { super(); }
@@ -12,8 +12,4 @@ class ArrayFilterTest extends Test {
     }
     return result;
   }
-}
-
-export default function arrayFilterTest(times: number, getInput: () => string) {
-  return new ArrayFilterTest(times, getInput).exec();
 }

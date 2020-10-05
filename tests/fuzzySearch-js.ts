@@ -6,7 +6,7 @@ const FuzzySearchJs = require('fuzzysearch-js');
 const indexOfFS = require('fuzzysearch-js/js/modules/IndexOfFS');
 const wordCountFS = require('fuzzysearch-js/js/modules/WordCountFS');
 
-class FuzzySearchJsTest extends Test {
+export default class FuzzySearchJsTest extends Test {
   public testName = 'Fuzzysearch-js';
 
   private fuzzySearchJs = new FuzzySearchJs(
@@ -31,8 +31,4 @@ class FuzzySearchJsTest extends Test {
       ({ value }: { value: string }) => this.items[this.nameIndexMap.get(value) as number],
     );
   }
-}
-
-export default function fuzzySearchJsTest(times: number, getInput: () => string) {
-  return new FuzzySearchJsTest(times, getInput).exec();
 }

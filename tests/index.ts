@@ -1,5 +1,8 @@
 import * as fs from 'fs';
 import type { TestFunction } from '../src/index';
+import type BaseTest from './_baseTest';
+
+type TestType = new (times: number, getInput: () => string) => BaseTest;
 
 const fsPromises = fs.promises;
 
@@ -10,6 +13,8 @@ const testFunctions: Promise<TestFunction[]> = fsPromises.readdir('./tests')
     .filter((fileName) => fileName[0] !== '_' && !blackListFiles.includes(fileName))
     .map((fileName) => import(`./${fileName.split('.')[0]}`)))
   .then((tests) => Promise.all(tests))
-  .then((tests) => tests.map((test) => test.default));
+  .then((tests: { default: TestType }[]) => tests.map(({ default: Test }) => (
+    (times, getInput, callback) => new Test(times, getInput).exec(callback)
+  )));
 
 export default testFunctions;

@@ -1,7 +1,7 @@
 import FlexSearch from 'flexsearch';
 import Test from './_baseTest';
 
-class FlexSearchTest extends Test {
+export default class FlexSearchTest extends Test {
   public testName = 'flexSearch';
 
   private index = FlexSearch.create({
@@ -26,8 +26,4 @@ class FlexSearchTest extends Test {
   preparationFunc() {
     this.items.forEach((item, index) => this.index.add(index, item.name));
   }
-}
-
-export default function flexSearchTest(times: number, getInput: () => string) {
-  return new FlexSearchTest(times, getInput).exec();
 }

@@ -1,7 +1,7 @@
 import FuzzySearch from 'fuzzy-search';
 import Test from './_baseTest';
 
-class ArrayFilterTest extends Test {
+export default class FuzzyDashSearch extends Test {
   public testName = 'fuzzy-search';
 
   private index = new FuzzySearch(this.items, ['namePrepared'], { sort: true });
@@ -11,8 +11,4 @@ class ArrayFilterTest extends Test {
   async testFunc(input: string) {
     return this.index.search(input);
   }
-}
-
-export default function arrayFilterTest(times: number, getInput: () => string) {
-  return new ArrayFilterTest(times, getInput).exec();
 }

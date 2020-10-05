@@ -2,7 +2,7 @@ import FuzzySet from 'fuzzyset.js';
 
 import Test from './_baseTest';
 
-class FuzzySetJsTest extends Test {
+export default class FuzzySetJsTest extends Test {
   public testName = 'fuzzySetJs';
 
   private fuzzySet = FuzzySet(this.items.map(({ namePrepared }) => namePrepared) as string[]);
@@ -26,8 +26,4 @@ class FuzzySetJsTest extends Test {
 
     return result;
   }
-}
-
-export default function fuzzySetJsTest(times: number, getInput: () => string) {
-  return new FuzzySetJsTest(times, getInput).exec();
 }

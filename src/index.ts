@@ -11,7 +11,7 @@ type Item = Items[0] & {
 
 export interface TestResult { time: number, name: string, data: Item[][], memory: string }
 export type TestFunction = (
-  (executionTimes: number, getInput: () => string) => Promise<TestResult>);
+  (executionTimes: number, getInput: () => string, callback?: () => void) => Promise<TestResult>);
 
 async function timeTest(executionTimes = 1) {
   const tests = await testsList;

@@ -21,7 +21,7 @@ export default abstract class Test {
 
   protected abstract async testFunc(input: string): Promise<Test['items']>;
 
-  async exec() {
+  async exec(callback?: (result: Test['items'][]) => void) {
     const { times, testName } = this;
 
     this.preparationFunc();
@@ -31,8 +31,12 @@ export default abstract class Test {
     const result = await Promise.all(
       Array.from({ length: times }, () => this.testFunc(this.getInput())),
     );
+    const ending = Date.now() - start.getTime();
+
+    if (callback) callback(result);
+
     return {
-      time: Date.now() - start.getTime(), data: result, name: testName, memory: memoryUsage,
+      time: ending, data: result, name: testName, memory: memoryUsage,
     };
   }
 }

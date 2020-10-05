@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 import Test from './_baseTest';
 
-class FuseJsTest extends Test {
+export default class FuseJsTest extends Test {
   public testName = 'fuseJs';
 
   private fuse = new Fuse(this.items, {
@@ -15,8 +15,4 @@ class FuseJsTest extends Test {
   async testFunc(input: string) {
     return this.fuse.search(input).map(({ item }) => item);
   }
-}
-
-export default function fuseJsTest(times: number, getInput: () => string) {
-  return new FuseJsTest(times, getInput).exec();
 }

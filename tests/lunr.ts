@@ -1,7 +1,7 @@
 import lunr from 'lunr';
 import Test from './_baseTest';
 
-class LunrTest extends Test {
+export default class LunrTest extends Test {
   public testName = 'lunr';
 
   private lunrIndex: ReturnType<typeof lunr>;
@@ -27,8 +27,4 @@ class LunrTest extends Test {
         .join(' '))
       .map(({ ref }: { ref: string }) => this.items[Number(ref)]);
   }
-}
-
-export default function lunrTest(times: number, getInput: () => string) {
-  return new LunrTest(times, getInput).exec();
 }

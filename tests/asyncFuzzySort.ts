@@ -1,7 +1,7 @@
 import fuzzySort from 'fuzzysort';
 import Test from './_baseTest';
 
-class AsyncFuzzySortTest extends Test {
+export default class AsyncFuzzySortTest extends Test {
   public testName = 'async fuzzySort';
 
   constructor(public times: number, public getInput: () => string) { super(); }
@@ -16,8 +16,4 @@ class AsyncFuzzySortTest extends Test {
   preparationFunc() {
     this.items.forEach((item) => { item.namePrepared = fuzzySort.prepare(item.name); });
   }
-}
-
-export default function asyncFuzzySortTest(times: number, getInput: () => string) {
-  return new AsyncFuzzySortTest(times, getInput).exec();
 }

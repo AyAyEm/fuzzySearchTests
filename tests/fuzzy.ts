@@ -1,7 +1,7 @@
 import fuzzy from 'fuzzy';
 import Test from './_baseTest';
 
-class FuzzyTest extends Test {
+export default class FuzzyTest extends Test {
   public testName = 'fuzzy';
 
   constructor(public times: number, public getInput: () => string) { super(); }
@@ -12,8 +12,4 @@ class FuzzyTest extends Test {
     };
     return fuzzy.filter(input, this.items, options).map(({ original }) => original);
   }
-}
-
-export default function fuzzyTest(times: number, getInput: () => string) {
-  return new FuzzyTest(times, getInput).exec();
 }
