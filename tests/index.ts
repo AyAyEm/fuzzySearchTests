@@ -14,7 +14,7 @@ const testFunctions: Promise<TestFunction[]> = fsPromises.readdir('./tests')
     .map((fileName) => import(`./${fileName.split('.')[0]}`)))
   .then((tests) => Promise.all(tests))
   .then((tests: { default: TestType }[]) => tests.map(({ default: Test }) => (
-    (times, getInput, callback) => new Test(times, getInput).exec(callback)
+    (times, getInput) => new Test(times, getInput).exec()
   )));
 
 export default testFunctions;

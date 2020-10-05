@@ -21,22 +21,19 @@ export default abstract class Test {
 
   protected abstract async testFunc(input: string): Promise<Test['items']>;
 
-  async exec(callback?: (result: Test['items'][]) => void) {
+  async exec() {
     const { times, testName } = this;
 
     this.preparationFunc();
     const memoryUsage = `${(Buffer.byteLength(JSON.stringify(this)) / 1e6).toFixed(2)}MB`;
 
-    const start = new Date();
-    const result = await Promise.all(
+    const start = Date.now();
+    const results = await Promise.all(
       Array.from({ length: times }, () => this.testFunc(this.getInput())),
     );
-    const ending = Date.now() - start.getTime();
-
-    if (callback) callback(result);
 
     return {
-      time: ending, data: result, name: testName, memory: memoryUsage,
+      time: Date.now() - start, data: results, name: testName, memory: memoryUsage,
     };
   }
 }
