@@ -99,17 +99,18 @@ async function logTests(executionTimes: number) {
         packageName: name,
         memory: memoryResultsMap.get(name),
         accuracy: accuracyResultsMap.get(name),
+        time,
       }
     ))
     .sort((a, b) => Number(b.accuracy) - (Number(a.accuracy)));
 
   const table = new Table({
-    head: ['package', 'ms/op', 'memory', 'accuracy'],
+    head: ['package', 'ms/op', `time for ${executionTimes} ops`, 'memory', 'accuracy'],
   });
   table.push(...mergedResults
     .map(({
-      msPerOp, packageName, memory, accuracy,
-    }) => [packageName, msPerOp, memory, `${accuracy?.toFixed(2)}%`]));
+      msPerOp, packageName, memory, accuracy, time,
+    }) => [packageName, msPerOp, time, memory, `${accuracy?.toFixed(2)}%`]));
 
   console.log(table.toString());
 }
