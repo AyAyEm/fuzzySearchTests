@@ -59,9 +59,8 @@ async function accuracyTest(randomFactor = 1) {
   accuracyTestBar.start(tests.length, 0);
 
   const results = await Promise.all(tests.map(async (test) => {
-    const result = await test((inputs.length), generateWrongInputFunc());
     accuracyTestBar.increment();
-    return result;
+    return test((inputs.length), generateWrongInputFunc());
   }));
   accuracyTestBar.stop();
 
@@ -78,10 +77,9 @@ async function memoryTest() {
   const memoryTestBar = new ProgressBar('memory');
   memoryTestBar.start(tests.length, 0);
 
-  const results = await Promise.all(tests.map(async (test) => {
-    const result = await test(1, () => inputs[0]);
+  const results = await Promise.all(tests.map((test) => {
     memoryTestBar.increment();
-    return result;
+    return test(1, () => inputs[0]);
   }));
   memoryTestBar.stop();
 
