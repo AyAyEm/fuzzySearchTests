@@ -1,8 +1,9 @@
 import _ from 'lodash';
+import Table from 'cli-table';
 import type Items from 'warframe-items';
 import fuzzySort from 'fuzzysort';
 import testsList from '../tests';
-import { inputs, stringRandomizer } from './utils';
+import { inputs, stringRandomizer, ProgressBar } from './utils';
 
 type Item = Items[0] & {
   namePrepared?: string | ReturnType<typeof fuzzySort.prepare>,
@@ -13,12 +14,19 @@ export type TestFunction = (
   (executionTimes: number, getInput: () => string) => Promise<TestResult>);
 
 async function timeTest(executionTimes = 1) {
-  const results = [];
   const tests = await testsList;
+
+  const timeTestBar = new ProgressBar('time');
+  timeTestBar.start(tests.length, 0);
+
+  const results = [];
   const getInput = (): string => inputs[_.random(0, inputs.length - 1)];
+
   for (let i = 0; i < tests.length; i += 1) {
     results.push(await tests[i](executionTimes, getInput));
+    timeTestBar.increment();
   }
+  timeTestBar.stop();
 
   return results;
 }
@@ -45,8 +53,17 @@ async function accuracyTest(randomFactor = 1) {
     return (100 / originalList.length) * matches;
   }
 
-  const results = await Promise.all((await testsList).map((test) => (
-    test((inputs.length), generateWrongInputFunc()))));
+  const tests = await testsList;
+
+  const accuracyTestBar = new ProgressBar('accuracy');
+  accuracyTestBar.start(tests.length, 0);
+
+  const results = await Promise.all(tests.map(async (test) => {
+    const result = await test((inputs.length), generateWrongInputFunc());
+    accuracyTestBar.increment();
+    return result;
+  }));
+  accuracyTestBar.stop();
 
   return new Map(results.map((result) => {
     const resultedList = result.data.map(([firstResult]) => firstResult?.namePrepared);
@@ -57,37 +74,46 @@ async function accuracyTest(randomFactor = 1) {
 
 async function memoryTest() {
   const tests = await testsList;
-  const results = await Promise.all(tests.map((test) => test(1, () => inputs[0])));
-  const memoryUsage = results.map(({ name, memory }) => [name, memory]);
 
+  const memoryTestBar = new ProgressBar('memory');
+  memoryTestBar.start(tests.length, 0);
+
+  const results = await Promise.all(tests.map(async (test) => {
+    const result = await test(1, () => inputs[0]);
+    memoryTestBar.increment();
+    return result;
+  }));
+  memoryTestBar.stop();
+
+  const memoryUsage: [string, string][] = results.map(({ name, memory }) => [name, memory]);
   return memoryUsage;
 }
 
-async function logTests(
-  executionTimes: number, logFunc = console.log,
-) {
+async function logTests(executionTimes: number) {
   const timeResults = await timeTest(executionTimes);
-  const timeResultsOutput = timeResults
-    .sort(({ time: a }, { time: b }) => (a > b ? 1 : -1))
-    .map(({ time, name }, index) => (
-      `${index + 1}. ${name}: ${time / executionTimes}ms/op `
-      + `in ${executionTimes} op(s) took ${time}ms`))
-    .join('\n');
+  const accuracyResultsMap = await accuracyTest(1);
+  const memoryResultsMap = new Map(await memoryTest());
 
-  const accuracyResults = await accuracyTest(1);
-  const accuracyResultsOutput = [...accuracyResults.entries()]
-    .sort(({ 1: a }, { 1: b }) => (a > b ? -1 : 1))
-    .map(([name, accuracy], index) => `${index + 1}. ${name}: ${accuracy.toFixed(2)}%`)
-    .join('\n');
+  const mergedResults = timeResults
+    .map(({ time, name }) => (
+      {
+        msPerOp: time / executionTimes,
+        packageName: name,
+        memory: memoryResultsMap.get(name),
+        accuracy: accuracyResultsMap.get(name),
+      }
+    ))
+    .sort((a, b) => Number(b.accuracy) - (Number(a.accuracy)));
 
-  const memoryResults = await memoryTest();
-  const memoryResultsOutput = memoryResults
-    .sort(({ 1: a }, { 1: b }) => (a < b ? -1 : 1))
-    .map(([name, memory], index) => `${index + 1}. ${name}: ${memory}`)
-    .join('\n');
+  const table = new Table({
+    head: ['package', 'ms/op', 'memory', 'accuracy'],
+  });
+  table.push(...mergedResults
+    .map(({
+      msPerOp, packageName, memory, accuracy,
+    }) => [packageName, msPerOp, memory, `${accuracy?.toFixed(2)}%`]));
 
-  logFunc(`Time test:\n${timeResultsOutput}\n\n`
-    + `Accuracy test\n${accuracyResultsOutput}\n\n`
-    + `Memory test\n${memoryResultsOutput}`);
+  console.log(table.toString());
 }
-logTests(Number(process.argv[2]) || 1000);
+
+logTests(Number(process.argv[2]) || 10);
