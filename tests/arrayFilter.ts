@@ -1,7 +1,7 @@
 import Test from './_baseTest';
 
 class ArrayFilterTest extends Test {
-  public testName = 'arrayFilter';
+  public testName = 'JavaScript-arrayFilter';
 
   constructor(public times: number, public getInput: () => string) { super(); }
 
