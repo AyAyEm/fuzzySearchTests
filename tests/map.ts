@@ -1,7 +1,7 @@
 import Test from './_baseTest';
 
 class MapTest extends Test {
-  public testName = 'Map';
+  public testName = 'JavaScript-Map';
 
   private nameIndexMap = new Map(this.items.map(
     ({ namePrepared }, index) => [namePrepared, index],
