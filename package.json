@@ -4,16 +4,20 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "test": "node src/index.ts",
-    "start": "node src/index.ts"
+    "test": "ts-node src/index.ts",
+    "start": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "",
   "dependencies": {
+    "@types/cli-progress": "^3.8.0",
+    "@types/cli-table": "^0.3.0",
     "@types/lodash": "^4.14.161",
     "@types/node": "^14.10.1",
     "axios": "^0.20.0",
+    "cli-progress": "^3.8.2",
+    "cli-table": "^0.3.1",
     "flexsearch": "^0.6.32",
     "fuse.js": "^6.4.1",
     "fuzzy": "^0.1.3",
