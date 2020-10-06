@@ -43,6 +43,8 @@
     "@typescript-eslint/no-empty-function": ["off"],
     "class-methods-use-this": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": ["error"]
   }
 }
