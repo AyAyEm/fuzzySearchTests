@@ -18,8 +18,6 @@ export default class FuzzySearchJsTest extends Test {
     ({ namePrepared }, index) => [namePrepared, index],
   ));
 
-  constructor(public times: number, public getInput: () => string) { super(); }
-
   preparationFunc() {
     // this.fuzzySearchJs.addModule(levenshteinFS());
     this.fuzzySearchJs.addModule(indexOfFS());

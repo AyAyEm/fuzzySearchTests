@@ -10,8 +10,6 @@ export default class FuseJsTest extends Test {
     isCaseSensitive: false,
   });
 
-  constructor(public times: number, public getInput: () => string) { super(); }
-
   async testFunc(input: string) {
     return this.fuse.search(input).map(({ item }) => item);
   }

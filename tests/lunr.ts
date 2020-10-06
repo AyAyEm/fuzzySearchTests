@@ -6,8 +6,8 @@ export default class LunrTest extends Test {
 
   private lunrIndex: ReturnType<typeof lunr>;
 
-  constructor(public times: number, public getInput: () => string) {
-    super();
+  constructor(times: number, getInput: () => string) {
+    super(times, getInput);
 
     const { items } = this;
     this.lunrIndex = lunr(function indexPreparation() {

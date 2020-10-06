@@ -4,8 +4,6 @@ import Test from './_baseTest';
 export default class FuzzySortTest extends Test {
   public testName = 'fuzzySort';
 
-  constructor(public times: number, public getInput: () => string) { super(); }
-
   async testFunc(input: string) {
     const fuzzyOptions = { keys: ['namePrepared'] };
     return (await fuzzySort.go(input, this.items, fuzzyOptions))

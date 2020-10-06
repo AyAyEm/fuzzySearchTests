@@ -13,13 +13,11 @@ export default abstract class Test {
 
   public abstract testName: string;
 
-  protected abstract times: number;
-
-  protected abstract getInput: () => string;
-
   protected preparationFunc(): void { }
 
   protected abstract async testFunc(input: string): Promise<Test['items']>;
+
+  constructor(public times: number, public getInput: () => string) { }
 
   async exec() {
     const { times, testName } = this;
